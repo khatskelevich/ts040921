@@ -1,4 +1,3 @@
-/* eslint-enable */
 Object.defineProperty(window, 'MySweetApp', { value: 'v1.0.0', writable: true });
 
 function deliveryMethod() {
@@ -7,14 +6,18 @@ function deliveryMethod() {
 }
 
 function shipWeight() {
-	return parseInt(document.getElementById('weight')!.innerHTML);
+	const el = document.getElementById('weight');
+	if (el === null) {
+		return 0;
+	}
+	return parseInt(el.innerHTML);
 }
 
-function sendUpdates(emailAddr:string) {
+function sendUpdates(emailAddr: string | string[]) {
 	/**
 	 * @param {string} addr
 	 */
-	function sendEmail(addr:string) {
+	function sendEmail(addr: string) {
 		console.log(`Shipping to ${addr} via ${deliveryMethod() || 'standard'} delivery`);
 
 		if (shipWeight() > 100) {
@@ -30,4 +33,4 @@ function sendUpdates(emailAddr:string) {
 	}
 }
 
-sendUpdates('me@pb.com')
+sendUpdates('inepipenko@gmail.com');
