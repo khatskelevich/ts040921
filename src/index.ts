@@ -1,85 +1,40 @@
-import '../assets/css/style.css';
+// T extends U ? X : Y
+
+// type NonUndefined<T> = T extends undefined ? never : T;
 //
-// /** let/const */
-// let period = 10;
-// const baseUrl = 'http://localhost:3000';
+// const a: NonUndefined<number | undefined | boolean> = 's';
 //
-// /***object */
-// const firstName = 'Igor';
-// const account = {
-// 	firstName,
-// 	getName() {
-// 		return this.firstName;
-// 	},
+// const b: Exclude<any, any>
+
+interface IHydrantA {
+	name: string;
+	type: 'A';
+}
+
+//
+// interface IHydrantB {
+// 	name: string;
+// 	type: 'B';
+// }
+//
+// interface IHydrantC {
+// 	name: string;
+// 	type: 'C';
+// }
+//
+// type Hydrant = IHydrantA | IHydrantB | IHydrantC;
+// type Exclude<T, U> = T extends U ? never : T;
+// const hAC: Exclude<Hydrant, IHydrantB | IHydrantC> = {
+// 	name: 'MyHydrant',
+// 	type: 'A',
 // };
-//
-// /**... */
-// const person = { ...account };
-// let dates = [...[1, 2, 3]];
-//
-// /***destructoring */
-// const { firstName: username } = account;
-// const [firstDate] = dates;
-//
-// /***template string */
-// function userMessage([start, end]: TemplateStringsArray, { firstName: myName }: typeof account) {
-// 	return `${start}${myName}${end}`;
-// }
-//
-// console.log(userMessage`Good day, ${person} !!!!`);
-//
-// /*** for of */
-// for (const date of dates) {
-// 	console.log(date);
-// }
-//
-// /*** ()=> */
-// const sum = (a: number, b: number) => a + b;
-//
-// /***Class */
-//
-// class Point {
-// 	public x = 1;
-//
-// 	public getX() {
-// 		return this.x;
-// 	}
-// }
-//
-// /***opt param */
-// const user: any = {};
-// const x = user?.info?.male;
-//
-// /***?? */
-// let admin = 0;
-// let p = admin ?? user;
 
-// /** let/const */
-// let period = 10
-// const baseUrl = 'http://localhost:3000'
+type Arr = [() => IHydrantA, () => number];
 
-// /** object */
-// const firstName = 'Igor'
-// const account = {
-//     firstName,
-//     getName () {
-//         return this.firstName
-//     },
-//     period,
-//     baseUrl
-// }
-//
-// /** spread */
-// const person = {...account}
-// let dates = [...[1, 2, 3]]
-//
-// /** destruct */
-// const {firstName: username} = account
-// const [firstDate] = dates
-//
-// /** template strings */
-// function userMessage ([start, end]: TemplateStringsArray, {firstName}: typeof account) {
-//     return `${start}${firstName}${end}`
-// }
-//
-// console.log(`gd, ${person}`)
+type FirstTupleElReturnType<T> = T extends [infer U, ...unknown[]]
+	? U extends (...args: unknown[]) => infer R
+		? R
+		: never
+	: never;
+
+const v: FirstTupleElReturnType<Arr> = { name: 'H1', type: 'A' };
