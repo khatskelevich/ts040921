@@ -54,7 +54,6 @@ import '../assets/css/style.css';
 // let admin = 0;
 // let p = admin ?? user;
 
-
 // /** let/const */
 // let period = 10
 // const baseUrl = 'http://localhost:3000'
