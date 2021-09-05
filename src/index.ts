@@ -99,3 +99,12 @@ function flatten<Z extends unknown[]>(_x: Z): FlattenType<Z>[] {
 }
 
 const arr1: number[] = flatten([1, 2]);
+
+function ovr(b: string): string;
+function ovr(b: number): number;
+function ovr(b: number | string): number | string {
+	console.log(b);
+	return b;
+}
+
+const res = ovr(4) + ovr(2);
