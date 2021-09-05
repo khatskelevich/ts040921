@@ -1,40 +1,89 @@
-// T extends U ? X : Y
-
-// type NonUndefined<T> = T extends undefined ? never : T;
-//
-// const a: NonUndefined<number | undefined | boolean> = 's';
-//
-// const b: Exclude<any, any>
-
-interface IHydrantA {
-	name: string;
-	type: 'A';
+interface IPerson {
+	readonly name: string;
+	readonly age: number;
+	info: { male: boolean };
+	subjects?: string[];
 }
 
+type NotReadonlyNonOptional<T> = {
+	-readonly [P in keyof T]-?: T[P];
+};
+
+let p1: NotReadonlyNonOptional<IPerson> = {
+	name: 'Ihor',
+	age: 35,
+	info: { male: true },
+	subjects: [],
+};
+
+p1.name = 'Andrey';
+
+let a: Partial<any>;
+
+function update(_p: Partial<IPerson>) {}
+
+update({ name: 'Vlad' });
+
+// type RemoveKeyByValueAndUnion<T, E> = {
+// 	[P in keyof T]: T[P] extends E ? never : P;
+// }[keyof T];
 //
-// interface IHydrantB {
-// 	name: string;
-// 	type: 'B';
-// }
-//
-// interface IHydrantC {
-// 	name: string;
-// 	type: 'C';
-// }
-//
-// type Hydrant = IHydrantA | IHydrantB | IHydrantC;
-// type Exclude<T, U> = T extends U ? never : T;
-// const hAC: Exclude<Hydrant, IHydrantB | IHydrantC> = {
-// 	name: 'MyHydrant',
-// 	type: 'A',
+// let p12: RemoveKeyByValueAndUnion<IPerson, { male: boolean } | number> = 'subjects';
+
+// type RemoveByFieldName<T, E> = {
+// 	[P in keyof T as Exclude<P, E>]: T[P];
 // };
+//
+// const p22: RemoveByFieldName<NotReadonlyNonOptional<IPerson>, 'info' | 'subjects'> = {
+// 	name: 'Ihor',
+// 	age: 35,
+// };
+//
+// p22.name = 'Ihor';
 
-type Arr = [() => IHydrantA, () => number];
+type CapitalizedKeysAndGetter<T> = {
+	[P in keyof T as `get${Capitalize<P & string>}`]: () => T[P];
+};
 
-type FirstTupleElReturnType<T> = T extends [infer U, ...unknown[]]
-	? U extends (...args: unknown[]) => infer R
-		? R
-		: never
-	: never;
+const getPerson: CapitalizedKeysAndGetter<NotReadonlyNonOptional<IPerson>> = {
+	getName: () => 'Ihor',
+	getAge: () => 35,
+	getInfo: () => ({ male: true }),
+	getSubjects: () => ['ts', 'angular'],
+};
 
-const v: FirstTupleElReturnType<Arr> = { name: 'H1', type: 'A' };
+/*
+	 name: string;  => getName: () => string
+	 age: number; => getAge
+	info: { male: boolean };
+	subjects: string[];
+
+
+
+
+ */
+
+type TypedObject<T, U> = {
+	[P in keyof T as `${U & string}${P & string}`]: T[P];
+};
+
+const createSimpleReducer = <T extends string>(name: T) => {
+	const obj = {
+		Pending: () => {
+			return 1;
+		},
+		Success: () => {
+			return 's';
+		},
+		Fail: () => {
+			return false;
+		},
+	};
+	const result: { [key: string]: Function } = {};
+	for (const [key, value] of Object.entries(obj)) {
+		result[`${name}${key}`] = value;
+	}
+	return result as TypedObject<typeof obj, T>;
+};
+
+const s: string = createSimpleReducer('salary').salarySuccess();

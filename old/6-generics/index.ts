@@ -13,8 +13,8 @@
 // 		male: boolean
 // 	};
 // }
-// interface, type, class, fn
-
+// // interface, type, class, fn
+//
 // interface IBaseInfo {
 // 	male: boolean
 // }
@@ -42,33 +42,33 @@
 // 	},
 // };
 //
-
-interface IUser {
-	name: string;
-	age: number;
-}
-
-interface IProduct {
-	name: string;
-	price: number;
-}
-
-interface IState {
-	user: IUser;
-	products: IProduct[];
-	cart: IProduct[];
-}
-
-const state: IState = {
-	user: { name: 'Ihor', age: 35 },
-	products: [
-		{ name: 'IPhone 8', price: 100 },
-		{ name: 'IPhone XR', price: 200 },
-	],
-	cart: [],
-};
-type Select<T> = <K extends keyof T>(state: T, field: K) => T[K];
-const select: Select<IState> = (store: any, field: any) => store[field];
-
-const user: IUser = select(state, 'user');
-const products: IProduct[] = select(state, 'cart');
+//
+// interface IUser {
+// 	name: string;
+// 	age: number;
+// }
+//
+// interface IProduct {
+// 	name: string;
+// 	price: number;
+// }
+//
+// interface IState {
+// 	user: IUser;
+// 	products: IProduct[];
+// 	cart: IProduct[];
+// }
+//
+// const state: IState = {
+// 	user: { name: 'Ihor', age: 35 },
+// 	products: [
+// 		{ name: 'IPhone 8', price: 100 },
+// 		{ name: 'IPhone XR', price: 200 },
+// 	],
+// 	cart: [],
+// };
+// type Select<T> = <K extends keyof T>(state: T, field: K) => T[K];
+// const select: Select<IState> = (store: any, field: any) => store[field];
+//
+// const user: IUser = select(state, 'user');
+// const products: IProduct[] = select(state, 'cart');
