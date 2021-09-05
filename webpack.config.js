@@ -4,13 +4,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = () => {
 	return {
-		mode: 'production',
+		mode: 'none',
 		entry: path.resolve(__dirname, 'src'),
 		output: {
 			filename: '[name].bundle.js',
 			path: path.resolve(__dirname, 'dist'),
 		},
-		// devtool: 'source-map',
+		devtool: 'source-map',
 		resolve: {
 			extensions: ['.ts', '.js', '.json'],
 		},
