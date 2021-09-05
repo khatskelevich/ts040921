@@ -38,3 +38,15 @@ type FirstTupleElReturnType<T> = T extends [infer U, ...unknown[]]
 	: never;
 
 const v: FirstTupleElReturnType<Arr> = { name: 'H1', type: 'A' };
+
+type FlattenType<T> = T extends (infer U)[] ? FlattenType<U> : T;
+
+/**
+ * Определяем тип результата по входящим аргументам
+ * @param _x
+ */
+function flatten<Z extends unknown[]>(_x: Z): FlattenType<Z>[] {
+	return [];
+}
+
+const arr1: number[] = flatten([1, 2]);
