@@ -1,92 +1,102 @@
-interface IPerson {
-	readonly name: string;
-	readonly age: number;
-	info: { male: boolean };
-	subjects?: string[];
-}
-
-type NotReadonlyNonOptional<T> = {
-	-readonly [P in keyof T]-?: T[P];
-};
-
-let p1: NotReadonlyNonOptional<IPerson> = {
-	name: 'Ihor',
-	age: 35,
-	info: { male: true },
-	subjects: [],
-};
-
-p1.name = 'Andrey';
-
-let a: Partial<any>;
-
-function update(_p: Partial<IPerson>) {}
-
-update({ name: 'Vlad' });
-
-// type RemoveKeyByValueAndUnion<T, E> = {
-// 	[P in keyof T]: T[P] extends E ? never : P;
-// }[keyof T];
+// // function average(a: number, b: number, c: number): string {
+// // 	const avg: number = (a + b + c) / 3;
+// // 	return `Average is ${avg}`;
+// // }
 //
-// let p12: RemoveKeyByValueAndUnion<IPerson, { male: boolean } | number> = 'subjects';
-
-// type RemoveByFieldName<T, E> = {
-// 	[P in keyof T as Exclude<P, E>]: T[P];
-// };
+// // function average(a: number, b?: number, c?: number): string {
+// // 	if (b === undefined) {
+// // 		b = 0;
+// // 	}
+// // 	if (c === undefined) {
+// // 		c = 0;
+// // 	}
+// // 	const avg: number = (a + b + c) / 3;
+// // 	return `Average is ${avg}`;
+// // }
 //
-// const p22: RemoveByFieldName<NotReadonlyNonOptional<IPerson>, 'info' | 'subjects'> = {
+// // function average(a: number, b: number = 0, c: number = 0): string {
+// // 	const avg: number = (a + b + c) / 3;
+// // 	return `Average is ${avg}`;
+// // }
+//
+// // function isString(param: number | string): param is string {
+// // 	return typeof param === 'string';
+// // }
+// //
+// // function average(a: number, b: string): string;
+// // function average(a: string, b: number): string;
+// // function average(a: number, b: number, c: number): string;
+// // function average(...args: (number | string)[]): string {
+// // 	let total: number = 0;
+// // 	for (const arg of args) {
+// // 		// const guard = typeof arg === 'string';
+// // 		if (isString(arg)) {
+// // 			total += Number(arg);
+// // 			continue;
+// // 		}
+// // 		total += arg;
+// // 	}
+// // 	const avg: number = total / args.length;
+// // 	return `Average is ${avg}`;
+// // }
+// //
+// // average(1);
+// // average(1, 2);
+// // average(1, '2');
+// // average('1', 2);
+// // average(1, 2, 1);
+// // average(1, 2, 2, 3, 4);
+// // average(1, 2, 2, 3, 4, 52);
+// // average(1, 2, 's');
+// // const v: number = average(1, 2, 3);
+// //
+// // function test(show: true): { test: number; value: () => string };
+// // function test(show: false): { test: number };
+// // function test(show: boolean) {
+// // 	if (show) {
+// // 		return {
+// // 			test: 1,
+// // 			value: () => 'some text',
+// // 		};
+// // 	}
+// // 	return {
+// // 		test: 1,
+// // 	};
+// // }
+// //
+// // test(true).value;
+// // test(false).test;
+// //
+// // $('').on();
+//
+// import Event = JQuery.Event;
+//
+// function getFullName<T extends { name: string; surname: string }>(this: T, age: number) {
+// 	return `${this.name}${this.surname} - ${age}`;
+// }
+//
+// let acc = {
 // 	name: 'Ihor',
-// 	age: 35,
+// 	surname: 'Nepipenko',
+// 	getFullName,
 // };
 //
-// p22.name = 'Ihor';
-
-type CapitalizedKeysAndGetter<T> = {
-	[P in keyof T as `get${Capitalize<P & string>}`]: () => T[P];
-};
-
-const getPerson: CapitalizedKeysAndGetter<NotReadonlyNonOptional<IPerson>> = {
-	getName: () => 'Ihor',
-	getAge: () => 35,
-	getInfo: () => ({ male: true }),
-	getSubjects: () => ['ts', 'angular'],
-};
-
-/*
-	 name: string;  => getName: () => string
-	 age: number; => getAge
-	info: { male: boolean };
-	subjects: string[];
-
-
-
-
- */
-
-type TypedObject<T, U> = {
-	[P in keyof T as `${U & string}${P & string}`]: T[P];
-};
-
-const createSimpleReducer = <T extends string>(name: T) => {
-	const obj = {
-		Pending: () => {
-			return 1;
-		},
-		Success: () => {
-			return 's';
-		},
-		Fail: () => {
-			return false;
-		},
-	};
-	const result: { [key: string]: Function } = {};
-	for (const [key, value] of Object.entries(obj)) {
-		result[`${name}${key}`] = value;
-	}
-	return result as TypedObject<typeof obj, T>;
-};
-
-const s: string = createSimpleReducer('salary').salarySuccess();
+// acc.getFullName(35);
+//
+// class UIEl {
+// 	public addClick(_onClick: (this: void, e: Event) => void): void {}
+// }
+//
+// class Handler {
+// 	public info!: string;
+//
+// 	public onClick(this: this, _e: Event) {}
+// }
+//
+// const h = new Handler();
+// const el = new UIEl();
+//
+// el.addClick(h.onClick);
 
 type FlattenType<T> = T extends (infer U)[] ? FlattenType<U> : T;
 
